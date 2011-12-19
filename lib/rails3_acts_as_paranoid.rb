@@ -109,7 +109,7 @@ module ActsAsParanoid
     end
 
     def destroy!
-      self.die!('destroy') if !self.destroyable_by?(self.class.current_user)
+      self.die!('destroy') if self.class.current_user && !self.destroyable_by?(self.class.current_user)
 
       with_transaction_returning_status do
         run_callbacks :destroy do
@@ -122,7 +122,7 @@ module ActsAsParanoid
     end
 
     def destroy
-      self.die!('destroy') if !self.destroyable_by?(self.class.current_user)
+      self.die!('destroy') if self.class.current_user && !self.destroyable_by?(self.class.current_user)
 
       if paranoid_value.nil?
         with_transaction_returning_status do
